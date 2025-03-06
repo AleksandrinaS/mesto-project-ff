@@ -16,11 +16,4 @@ function createCard(cardData, deleteCard) {
 }
 
 const placesList = document.querySelector('.places__list');
-
-initialCards.forEach(card => {
-    const cardElement = createCard(card, (cardElement) => {
-        deleteCard();
-    });
-    
-    placesList.append(cardElement);
-});
+initialCards.forEach(card => placesList.append(createCard(card)));
