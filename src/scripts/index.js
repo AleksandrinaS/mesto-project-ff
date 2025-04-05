@@ -3,6 +3,7 @@ import { createCard, deleteCard} from "../components/card";
 import { openModal, closeModal, setupModalListeners } from "../components/modals";
 import '../pages/index.css';
 
+//Получение DOM-элементов
 const placesList = document.querySelector('.places__list');
 initialCards.forEach(card => placesList.append(createCard(card, deleteCard)));
 
@@ -13,6 +14,7 @@ const popupEditProfile = document.querySelector(".popup_type_edit");
 const popupAddCard = document.querySelector(".popup_type_new-card");
 const popupImage = document.querySelector(".popup_type_image");
 
+//Обработчики событий для кнопок открытия модальных окон
 openPopupButton.addEventListener('click', () => {
     openModal(popupEditProfile)
 });
@@ -23,12 +25,14 @@ cardImage.addEventListener('click', () => {
     openModal(popupImage)
 });
 
+//Получение элементов формы профиля
 const formElement = document.forms.editProfile;
 const nameInput = document.querySelector('.popup__input_type_name');
 const profileTitle = document.querySelector('.profile__title');
 const jobInput = document.querySelector('.popup__input_type_description');
 const profileDescription = document.querySelector('.profile__description');
 
+//Обработчик отправки формы профиля
 function handleFormSubmit(evt) {
     evt.preventDefault();
     profileTitle.textContent = nameInput.value;
@@ -36,15 +40,18 @@ function handleFormSubmit(evt) {
     closeModal(popupEditProfile);
 };
 
+//Настройка обработчиков для модальных окон
 setupModalListeners(popupEditProfile);
 setupModalListeners(popupAddCard);
 setupModalListeners(popupImage);
 
 formElement.addEventListener('submit', handleFormSubmit);
 
+//Получение элементов модального окна изображения
 const imageInPopup = popupImage.querySelector('.popup__image');
 const captionInPopup = popupImage.querySelector('.popup__caption');
 
+//Обработчик клика на карточку для открытия изображения
 export function handleImageClick (cardData) {
    imageInPopup.src = cardData.link;
    imageInPopup.alt = cardData.name;
@@ -52,6 +59,7 @@ export function handleImageClick (cardData) {
    openModal(popupImage);
  };
 
+//Обработчик формы добавления карточки
 const addCardForm = document.forms.newPlace;
 addCardForm.addEventListener('submit', (evt) => {
     evt.preventDefault();

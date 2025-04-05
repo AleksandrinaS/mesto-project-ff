@@ -1,3 +1,4 @@
+//Обработчик нажатия клавиши Esc
 function handleEscKeyUp (e) {
     if (e.key === "Escape") {
     const popup = document.querySelector(".popup_is-opened");
@@ -6,6 +7,8 @@ function handleEscKeyUp (e) {
     }
     }
    };
+
+//Открывает модальное окно
 function openModal (modal) {
     modal.classList.add("popup_is-opened");
     document.addEventListener("keyup", handleEscKeyUp);
@@ -16,11 +19,14 @@ function openModal (modal) {
     });
    };
    
+ //Закрывает модальное окно  
  function closeModal (modal) {
     modal.classList.remove("popup_is-opened");
     document.removeEventListener("keyup", handleEscKeyUp);
     modal.removeEventListener("click", () => {});
    };
+
+ //Настраивает обработчики событий для модального окна  
 function setupModalListeners (modalElement) {
     const closeButton = modalElement.querySelector(".popup__close");
 
