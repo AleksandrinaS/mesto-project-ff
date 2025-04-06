@@ -5,7 +5,7 @@ import '../pages/index.css';
 
 //Получение DOM-элементов
 const placesList = document.querySelector('.places__list');
-initialCards.forEach(card => placesList.append(createCard(card, deleteCard)));
+initialCards.forEach(card => placesList.append(createCard(card, deleteCard, handleImageClick)));
 
 const openPopupButton = document.querySelector('.profile__edit-button');
 const addPopupButton = document.querySelector('.profile__add-button');
@@ -16,7 +16,9 @@ const popupImage = document.querySelector(".popup_type_image");
 
 //Обработчики событий для кнопок открытия модальных окон
 openPopupButton.addEventListener('click', () => {
-    openModal(popupEditProfile)
+    nameInput.value = profileTitle.textContent;
+    jobInput.value = profileDescription.textContent;
+    openModal(popupEditProfile);
 });
 addPopupButton.addEventListener('click', () => {
     openModal(popupAddCard)
@@ -33,7 +35,7 @@ const jobInput = document.querySelector('.popup__input_type_description');
 const profileDescription = document.querySelector('.profile__description');
 
 //Обработчик отправки формы профиля
-function handleFormSubmit(evt) {
+function handleEditProfileFormSubmit(evt) {
     evt.preventDefault();
     profileTitle.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
@@ -45,19 +47,20 @@ setupModalListeners(popupEditProfile);
 setupModalListeners(popupAddCard);
 setupModalListeners(popupImage);
 
-formElement.addEventListener('submit', handleFormSubmit);
+formElement.addEventListener('submit', handleEditProfileFormSubmit);
 
 //Получение элементов модального окна изображения
 const imageInPopup = popupImage.querySelector('.popup__image');
 const captionInPopup = popupImage.querySelector('.popup__caption');
 
 //Обработчик клика на карточку для открытия изображения
-export function handleImageClick (cardData) {
-   imageInPopup.src = cardData.link;
-   imageInPopup.alt = cardData.name;
-   captionInPopup.textContent = cardData.name;
-   openModal(popupImage);
- };
+function handleImageClick (cardData) {
+    imageInPopup.src = cardData.link;
+    imageInPopup.alt = cardData.name;
+    captionInPopup.textContent = cardData.name;
+    openModal(popupImage);
+  };
+
 
 //Обработчик формы добавления карточки
 const addCardForm = document.forms.newPlace;

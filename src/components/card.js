@@ -1,7 +1,5 @@
-import { handleImageClick } from "../scripts";
-
 //Создает карточку
-function createCard(cardData, deleteCard) {
+function createCard(cardData, deleteCard, handleImageClick) {
     const template = document.querySelector('#card-template');
     const cardElement = template.content.cloneNode(true);
     const item = cardElement.querySelector('.card');
