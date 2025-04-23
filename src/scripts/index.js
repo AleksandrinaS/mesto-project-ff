@@ -1,6 +1,10 @@
 import { initialCards } from "../components/cards";
 import { createCard, deleteCard} from "../components/card";
 import { openModal, closeModal, setupModalListeners } from "../components/modals";
+import {
+    clearValidation,
+    enableValidation
+} from '../components/validation.js';
 import '../pages/index.css';
 
 //Получение DOM-элементов
@@ -13,26 +17,39 @@ const cardImage = document.querySelector('.card__image');
 const popupEditProfile = document.querySelector(".popup_type_edit");
 const popupAddCard = document.querySelector(".popup_type_new-card");
 const popupImage = document.querySelector(".popup_type_image");
+const forms = document.forms;
+const formProfile = document.forms.editProfile;
+const nameInput = document.querySelector('.popup__input_type_name');
+const profileTitle = document.querySelector('.profile__title');
+const jobInput = document.querySelector('.popup__input_type_description');
+const profileDescription = document.querySelector('.profile__description');
+
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  };
+  
+  // Вызовем функцию
+  enableValidation(validationConfig);
 
 //Обработчики событий для кнопок открытия модальных окон
 openPopupButton.addEventListener('click', () => {
     nameInput.value = profileTitle.textContent;
     jobInput.value = profileDescription.textContent;
     openModal(popupEditProfile);
+    clearValidation(forms.editProfile, validationConfig);
 });
 addPopupButton.addEventListener('click', () => {
-    openModal(popupAddCard)
+    openModal(popupAddCard);
+    clearValidation(forms.newPlace, validationConfig);
 });
 cardImage.addEventListener('click', () => {
     openModal(popupImage)
 });
-
-//Получение элементов формы профиля
-const formElement = document.forms.editProfile;
-const nameInput = document.querySelector('.popup__input_type_name');
-const profileTitle = document.querySelector('.profile__title');
-const jobInput = document.querySelector('.popup__input_type_description');
-const profileDescription = document.querySelector('.profile__description');
 
 //Обработчик отправки формы профиля
 function handleEditProfileFormSubmit(evt) {
@@ -47,7 +64,7 @@ setupModalListeners(popupEditProfile);
 setupModalListeners(popupAddCard);
 setupModalListeners(popupImage);
 
-formElement.addEventListener('submit', handleEditProfileFormSubmit);
+formProfile.addEventListener('submit', handleEditProfileFormSubmit);
 
 //Получение элементов модального окна изображения
 const imageInPopup = popupImage.querySelector('.popup__image');
@@ -84,3 +101,38 @@ addCardForm.addEventListener('submit', (evt) => {
     closeModal(popupAddCard);
     addCardForm.reset();
     });
+    
+const config = {
+    url: 'https://nomoreparties.co/v1/wff-cohort-36',
+    headers: {
+        authorization: 'e1196308-7861-40b5-b9f3-00c12798c7fe'
+    },
+    response: function(res) {
+        if (res.ok) {
+            return res.json()
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    }
+}
+
+export const userData = () => {
+    return fetch(`${config.url}/users/me`, {
+        headers: {
+            authorization: config.headers.authorization
+        }
+    })
+    .then(res => config.response(res));
+}
+
+const cardData = () => {
+    return fetch(`${config.url}/cards`, {
+        headers: {
+            authorization: config.headers.authorization
+        }
+    })
+    .then((res) => {
+        return res.json();
+      })
+}
+
+cardData()
